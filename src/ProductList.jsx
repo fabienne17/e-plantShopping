@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import './ProductList.css'
 import CartItem from './CartItem';
+import { addItem } from './CartSlice';
+
 function ProductList({ onHomeClick }) {
+    const dispatch = useDispatch();
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
 
     const plantsArray = [
         {
@@ -252,6 +257,14 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product));
+        setAddedToCart((addedToCart) => ({
+            ...addedToCart,
+            [product.name]: true
+        }));
+    };
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -281,19 +294,25 @@ function ProductList({ onHomeClick }) {
                 <CartItem onContinueShopping={handleContinueShopping} />
             )}
             <div className="product-grid">
-                { plantsArray && plantsArray.map( (item) => (
-                    <div className='product-list'>
-                        {item.plants.map((plant) => (
-                            <div className='product-card'>
+                { plantsArray && plantsArray.map( (item, itemIndex) => (
+                    <div className='product-list'
+                         key={itemIndex}>
+                        {item.plants.map((plant, plantIndex) => (
+                            <div className='product-card'
+                                 key={plantIndex}>
                                 <div className='product-image'
                                      style={{backgroundImage: `url(${plant.image})`, 
                                              backgroundSize: 'cover', 
                                              backgroundRepeat: 'no-repeat', 
                                              backgroundPosition: 'center'}}></div>
                                 <div className='product-title'>{plant.name}</div>
+                                <div className='product-category'>{item.category}</div>
                                 <div className='product-description'>{plant.description}</div>
                                 <div className='product-price'>{plant.cost}</div>
-                                <button className='product-button'>Add to Cart</button>
+                                <button className='product-button'
+                                        onClick={() => handleAddToCart(plant)}>
+                                    Add to Cart
+                                </button>
                             </div>
                         ))}
                     </div>

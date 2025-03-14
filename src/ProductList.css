@@ -82,14 +82,20 @@ body {
 }
 
 .product-title {
+    font-size: 1.2rem;
     font-weight: bold;
+    margin-top: 10px;
+}
+
+.product-category {
+    font-style: italic;
     margin-bottom: 10px;
 }
 
 .product-price {
     color: #e74c3c;
     font-size: 1.2rem;
-    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .product-image {

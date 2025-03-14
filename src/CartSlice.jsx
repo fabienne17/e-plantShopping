@@ -1,3 +1,4 @@
+
 import { createSlice } from '@reduxjs/toolkit';
 
 export const CartSlice = createSlice({
@@ -7,7 +8,7 @@ export const CartSlice = createSlice({
   },
   reducers: {
     addItem: (state, action) => {
-    
+        console.log(action)
     },
     removeItem: (state, action) => {
     },
