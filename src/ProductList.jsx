@@ -285,12 +285,14 @@ function ProductList({ onHomeClick }) {
                     <div className='product-list'>
                         {item.plants.map((plant) => (
                             <div className='product-card'>
-                                <image className='product-image'
-                                        src={plant.image}
-                                        alt={plant.name} />
+                                <div className='product-image'
+                                     style={{backgroundImage: `url(${plant.image})`, 
+                                             backgroundSize: 'cover', 
+                                             backgroundRepeat: 'no-repeat', 
+                                             backgroundPosition: 'center'}}></div>
                                 <div className='product-title'>{plant.name}</div>
-                                <div className='product-price'>{plant.cost}</div>
                                 <div className='product-description'>{plant.description}</div>
+                                <div className='product-price'>{plant.cost}</div>
                                 <button className='product-button'>Add to Cart</button>
                             </div>
                         ))}
