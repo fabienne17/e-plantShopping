@@ -97,7 +97,7 @@ function ProductList({ onHomeClick }) {
             category: "Insect Repellent Plants",
             plants: [
                 {
-                    name: "oregano",
+                    name: "Oregano",
                     image: "https://cdn.pixabay.com/photo/2015/05/30/21/20/oregano-790702_1280.jpg",
                     description: "The oregano plants contains compounds that can deter certain insects.",
                     cost: "$10"
@@ -264,6 +264,7 @@ function ProductList({ onHomeClick }) {
             ...addedToCart,
             [product.name]: true
         }));
+        
     };
     return (
         <div>
@@ -295,27 +296,31 @@ function ProductList({ onHomeClick }) {
             )}
             <div className="product-grid">
                 { plantsArray && plantsArray.map( (item, itemIndex) => (
-                    <div className='product-list'
-                         key={itemIndex}>
-                        {item.plants.map((plant, plantIndex) => (
-                            <div className='product-card'
-                                 key={plantIndex}>
-                                <div className='product-image'
-                                     style={{backgroundImage: `url(${plant.image})`, 
-                                             backgroundSize: 'cover', 
-                                             backgroundRepeat: 'no-repeat', 
-                                             backgroundPosition: 'center'}}></div>
-                                <div className='product-title'>{plant.name}</div>
-                                <div className='product-category'>{item.category}</div>
-                                <div className='product-description'>{plant.description}</div>
-                                <div className='product-price'>{plant.cost}</div>
-                                <button className='product-button'
-                                        onClick={() => handleAddToCart(plant)}>
-                                    Add to Cart
-                                </button>
-                            </div>
-                        ))}
-                    </div>
+                    <>  
+                        <div className="product-category">
+                            <h1>{item.category}</h1>
+                        </div>
+                        <div className='product-list'
+                             key={itemIndex}>
+                            {item.plants.map((plant, plantIndex) => (
+                                <div className='product-card'
+                                     key={plantIndex}>
+                                    <div className='product-image'
+                                         style={{backgroundImage: `url(${plant.image})`, 
+                                                 backgroundSize: 'cover', 
+                                                 backgroundRepeat: 'no-repeat', 
+                                                 backgroundPosition: 'center'}}></div>
+                                    <div className='product-title'>{plant.name}</div>
+                                    <div className='product-description'>{plant.description}</div>
+                                    <div className='product-price'>{plant.cost}</div>
+                                    <button className='product-button'
+                                            onClick={() => handleAddToCart(plant)}>
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </>
                 ))}
             </div>
         </div>
