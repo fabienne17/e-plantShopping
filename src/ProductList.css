@@ -142,10 +142,10 @@ body {
     text-decoration: none;
     font-size: 20px;
 }
-.tag_home_link h3{
+.tag_home_link h3 {
     font-size: 30px;
 }
-.tag a{
+.tag a {
     text-decoration: none;
 }
 .tag {
@@ -173,7 +173,7 @@ body {
     color: white;
     display: flex;
 }
-.cart_quantity_count{
+.cart_quantity_count {
     margin-top: 16px;
     /* background-color: red; */
     margin-left: 27px;
@@ -181,13 +181,13 @@ body {
     font-size: 29px;
 
 }
-.plantname_heading{
+.plantname_heading {
    display: flex;
    align-items: center;
    justify-content: center;
     /* background-color: yellow; */
 }
-.plant_heading{
+.plant_heading {
     width: 400px;
     text-align: center;
     margin: 20px;
