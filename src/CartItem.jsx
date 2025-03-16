@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping, 
+                    plantBtnDisabled,
+                    cartList, 
+                    resetCartList }) => {
+
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
@@ -17,7 +21,7 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleContinueShopping = (e) => {
-   onContinueShopping(e);
+    onContinueShopping(e);
   };
 
   const handleCheckoutShopping = (e) => {
@@ -33,11 +37,21 @@ const CartItem = ({ onContinueShopping }) => {
       dispatch(updateQuantity({name: item.name, amount: item.quantity - 1}));
     } else {
       dispatch(removeItem(item));
+      cartList.splice(cartList.indexOf(item.name), 1);
+      resetCartList((cartList) => (
+        [...cartList]
+      ));
+      plantBtnDisabled(item.name);
     }
   };
 
   const handleRemove = (item) => {
     dispatch(removeItem(item));
+    cartList.splice(cartList.indexOf(item.name), 1);
+    resetCartList((cartList) => (
+        [...cartList]
+    ));
+    plantBtnDisabled(item.name);
   };
 
   // Calculate total cost based on quantity for an item
@@ -45,13 +59,9 @@ const CartItem = ({ onContinueShopping }) => {
     return parseFloat(item.cost.substring(1)) * parseInt(item.quantity)
   };
 
-  const calculateTotalNumberOfItems = () => {
-    let totalNumber = 0;
-    if(cart){
-      cart.forEach((item) => totalNumber += item.quantity);
-    };
-    return totalNumber;
-  }
+  const resetCartCount = () => {
+    return (cart ? cart.lenth : 0)
+  };
 
   return (
     <div className="cart-container">
@@ -98,7 +108,7 @@ const CartItem = ({ onContinueShopping }) => {
       </div>
       <div style={{ marginTop: '20px', color: 'black' }}
            className='total_cart_amount'>
-        {`${calculateTotalNumberOfItems()} plant(s)`}
+        {`${cart.length || 0} type(s) of plant`}
       </div>
       <div className="continue_shopping_btn">
         <button className="get-started-button"

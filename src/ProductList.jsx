@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
@@ -8,8 +8,7 @@ function ProductList({ onHomeClick }) {
     const dispatch = useDispatch();
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-    const [addedToCart, setAddedToCart] = useState({});
-    const [cartCount, setCartCount] = useState(0);
+    const [addedToCart, setAddedToCart] = useState([]);
 
     const plantsArray = [
         {
@@ -262,15 +261,13 @@ function ProductList({ onHomeClick }) {
     const handleAddToCart = (product) => {
         if(!AddToCartBtnDisabled(product.name)){
             dispatch(addItem(product));
-            setAddedToCart((addedToCart) => ({
-                ...addedToCart,
-                [product.name]: true
-            }));
-            setCartCount(Object.keys(addedToCart).length + 1)
+            setAddedToCart((addedToCart) => (
+                [...addedToCart, product.name]
+            ));
         }        
     };
     const AddToCartBtnDisabled = (productName) => {
-        return cartCount && Object.keys(addedToCart).includes(productName)
+        return addedToCart && addedToCart.includes(productName)
     };
     return (
         <div>
@@ -326,7 +323,7 @@ function ProductList({ onHomeClick }) {
                                     </path>
                                 </svg>
                                 <span class="cart_quantity_count">
-                                    {cartCount || ""}
+                                    {addedToCart.length || 0}
                                 </span> 
                             </h1>
                         </a>
@@ -335,7 +332,7 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-                { plantsArray && plantsArray.map( (item, itemIndex) => (
+                    { plantsArray && plantsArray.map( (item, itemIndex) => (
                     <>  
                         <div className="product-category">
                             <h1>{item.category}</h1>
@@ -374,10 +371,13 @@ function ProductList({ onHomeClick }) {
                             ))}
                         </div>
                     </>
-                ))}
+                    ))}
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem onContinueShopping={handleContinueShopping}
+                          plantBtnDisabled={AddToCartBtnDisabled}
+                          cartList={addedToCart}
+                          resetCartList={setAddedToCart} />
             )}
         </div>
     );

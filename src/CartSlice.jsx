@@ -24,14 +24,15 @@ export const CartSlice = createSlice({
         // find item in cart
         const itemInCart = state.items.find((item) => item.name === newItem.name);
         if(itemInCart){
+          console.log("Remove Item");
           state.items.splice(state.items.indexOf(itemInCart), 1)
         }
-      
     },
     updateQuantity: (state, action) => {
       const { name, amount } = action.payload;
       const itemInCart = state.items.find((item) => item.name === name);
       if(itemInCart){
+        console.log("Update Item");
         itemInCart.quantity = amount;
       }
     },
