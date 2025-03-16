@@ -9,6 +9,7 @@ function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
+    const [cartCount, setCartCount] = useState(0);
 
     const plantsArray = [
         {
@@ -230,7 +231,7 @@ function ProductList({ onHomeClick }) {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '1100px',
+        /*width: '1100px',*/
     }
     const styleA = {
         color: 'white',
@@ -259,12 +260,17 @@ function ProductList({ onHomeClick }) {
     };
 
     const handleAddToCart = (product) => {
-        dispatch(addItem(product));
-        setAddedToCart((addedToCart) => ({
-            ...addedToCart,
-            [product.name]: true
-        }));
-        //console.log(Object.keys(addedToCart).length + 1)        
+        if(!AddToCartBtnDisabled(product.name)){
+            dispatch(addItem(product));
+            setAddedToCart((addedToCart) => ({
+                ...addedToCart,
+                [product.name]: true
+            }));
+            setCartCount(Object.keys(addedToCart).length + 1)
+        }        
+    };
+    const AddToCartBtnDisabled = (productName) => {
+        return cartCount && Object.keys(addedToCart).includes(productName)
     };
     return (
         <div>
@@ -285,7 +291,6 @@ function ProductList({ onHomeClick }) {
                             </div>
                         </a>
                     </div>
-
                 </div>
                 <div style={styleObjUl}>
                     <div>
@@ -320,7 +325,9 @@ function ProductList({ onHomeClick }) {
                                           id="mainIconPathAttribute">
                                     </path>
                                 </svg>
-                                <span class="cart_quantity_count">{Object.keys(addedToCart).length || ""}</span> 
+                                <span class="cart_quantity_count">
+                                    {cartCount || ""}
+                                </span> 
                             </h1>
                         </a>
                     </div>
@@ -328,13 +335,6 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-
-
-                </div>
-            ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
-            )}
-            <div className="product-grid">
                 { plantsArray && plantsArray.map( (item, itemIndex) => (
                     <>  
                         <div className="product-category">
@@ -349,20 +349,36 @@ function ProductList({ onHomeClick }) {
                                          style={{backgroundImage: `url(${plant.image})`, 
                                                  backgroundSize: 'cover', 
                                                  backgroundRepeat: 'no-repeat', 
-                                                 backgroundPosition: 'center'}}></div>
-                                    <div className='product-title'>{plant.name}</div>
-                                    <div className='product-description'>{plant.description}</div>
-                                    <div className='product-price'>{plant.cost}</div>
-                                    <button className='product-button'
-                                            onClick={() => handleAddToCart(plant)}>
-                                        Add to Cart
-                                    </button>
+                                                 backgroundPosition: 'center'}}>
+                                    </div>
+                                    <div className='product-title'>
+                                        {plant.name}
+                                    </div>
+                                    <div className='product-description'>
+                                        {plant.description}
+                                    </div>
+                                    <div className='product-price'>
+                                        {plant.cost}
+                                    </div>
+                                    {AddToCartBtnDisabled(plant.name) ? (
+                                        <button className='product-button added-to-cart'>
+                                            Added to Cart
+                                        </button>
+                                    ) : (
+                                        <button className='product-button'
+                                                onClick={() => handleAddToCart(plant)}>
+                                            Add to Cart
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </>
                 ))}
-            </div>
+                </div>
+            ) : (
+                <CartItem onContinueShopping={handleContinueShopping} />
+            )}
         </div>
     );
 }
